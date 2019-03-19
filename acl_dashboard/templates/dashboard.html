@@ -1,0 +1,46 @@
+{% extends "bootstrap/base.html" %}
+{% block title %} ACL Dashboard {% endblock %}
+
+{% block head %}
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+<script src="https://js.pusher.com/4.4/pusher.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="chart" id="bargraph">
+                <script type="text/javascript">
+                    // Layout configuration
+                    var layout = {
+                        title: 'ACL Jobs succeed/Failed',
+                        xaxis: { title: 'Time (hr)'},
+                        yaxis: { 
+                            title: 'Duration Time (min) - Positive (succeed) / Negative (Failed)'
+                        }
+                    };
+
+                    var aclJobs = {{aclJobs | safe}};
+                    Plotly.plot('bargraph', aclJobs, layout, {responsive: true});
+
+                                        // connect to Pusher
+                                        const pusher = new Pusher('c1caa51defb8bb62355f', {
+                        cluster: 'eu',
+                        forceTLS: true
+                    });
+
+                    // Subscribe to acl_dashboard channel
+                    const channel = pusher.subscribe('acl_dashboard')
+
+                    // listen for relevant events
+                    channel.bind('job', data => {
+                        Plotly.newPlot('bargraph', data, layout, {responsive: true});
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
