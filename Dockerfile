@@ -1,9 +1,9 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.10
 
-#MAINTANER Ivan Rodriguez "irodriguez.salguero@gmail.com"
+LABEL maintainer="Ivan Rodriguez <irodriguez.salguero@gmail.com>"
 
-RUN apt-get update -y && \
-    apt-get install -y python3-pip python3-dev
+RUN apt-get update
+RUN apt-get install -y python3 python3-dev python3-pip unixodbc-dev tzdata
 
 # We copy just the requirements.txt first to leverage Docker cache
 COPY ./requirements.txt /app/requirements.txt
@@ -16,4 +16,4 @@ COPY . /app
 
 ENTRYPOINT [ "python3" ]
 
-CMD [ "app.py" ]
+CMD [ "acl_dashboard/app.py" ]
