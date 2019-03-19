@@ -37,7 +37,7 @@ def index():
 
 def getAclJobs():
     # SQL Query execution
-    connectionStr = 'Driver={SQL Server}; Server=' + env('DB_ADDRESS') + ';Database=' + env('DB_NAME')  + ';Integrated Security=True;Pooling=False;'
+    connectionStr = 'Driver={ODBC Driver 17 for SQL Server}; Server=' + env('DB_ADDRESS') + ';Database=' + env('DB_NAME')  + ';Integrated Security=True;Pooling=False;'
     connection = pyodbc.connect(connectionStr)
     query_acljobs = open('acljobs.sql', 'r')
     jobs_dataframe = pd.read_sql_query(query_acljobs.read(), connection)
