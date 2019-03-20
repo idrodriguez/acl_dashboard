@@ -13,8 +13,7 @@ from apscheduler.triggers.interval import IntervalTrigger
 from envparse import env
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
-
-import pyodbc
+import pymssql
 
 # Flask and Bootstrapper initialization
 app = Flask(__name__)
@@ -37,8 +36,7 @@ def index():
 
 def getAclJobs():
     # SQL Query execution
-    connectionStr = 'Driver={ODBC Driver 17 for SQL Server}; Server=' + env('DB_ADDRESS') + ';Database=' + env('DB_NAME')  + ';Integrated Security=True;Pooling=False;'
-    connection = pyodbc.connect(connectionStr)
+    connection = pymssql.connect(host=env('DB_ADDRESS'), user=env('DB_USER'), password=env('DB_PASSWD'), database=env('DB_NAME'))
     query_acljobs = open('acljobs.sql', 'r')
     jobs_dataframe = pd.read_sql_query(query_acljobs.read(), connection)
 

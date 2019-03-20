@@ -13,14 +13,14 @@ RUN echo "Europe/Madrid" | tee /etc/timezone && \
 
 # Install ODBC Driver 17 for SQL Server
 
-RUN apt-get install -y curl gnupg
-RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-RUN curl https://packages.microsoft.com/config/ubuntu/18.10/prod.list > /etc/apt/sources.list.d/mssql-release.list
-RUN apt-get update
-RUN ACCEPT_EULA=Y apt-get -y install msodbcsql17
+#RUN apt-get install -y curl gnupg
+#RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+#RUN curl https://packages.microsoft.com/config/ubuntu/18.10/prod.list > /etc/apt/sources.list.d/mssql-release.list
+#RUN apt-get update
+#RUN ACCEPT_EULA=Y apt-get -y install msodbcsql17
 
 # Install Python3 and ODBC headers
-RUN apt-get install -y python3 python3-dev python3-pip unixodbc-dev 
+RUN apt-get install -y python3 python3-dev python3-pip unixodbc-dev libssl1.0.0 libssl-dev
 
 # We copy just the requirements.txt first to leverage Docker cache
 COPY ./requirements.txt /app/requirements.txt
